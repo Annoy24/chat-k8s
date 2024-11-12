@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import socketIO from 'socket.io-client';
 
-const socket = socketIO.connect('http://localhost:4000');
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const socket = socketIO.connect(backendUrl);
+
 const Home = () => {
   const [message, setmessage] = useState("")
   const [messages, setMessages] = useState([]);

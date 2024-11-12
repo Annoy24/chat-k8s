@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatapp-client
+  namespace: chatapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatapp-client
+  template:
+    metadata:
+      labels:
+        app: chatapp-client
+    spec:
+      containers:
+        - name: client
+          image: annyo2024/chatapp-frontend:v1.2
+          ports:
+            - containerPort: 5173
+          env:
+            - name: VITE_BACKEND_URL
+              value: "http://192.168.49.2:31000"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatapp-client-service
+  namespace: chatapp
+spec:
+  type: NodePort # Use ClusterIP if you don’t want to expose it publicly
+  selector:
+    app: chatapp-client
+  ports:
+    - protocol: TCP
+      port: 5173
+      targetPort: 5173
+      nodePort: 30000
